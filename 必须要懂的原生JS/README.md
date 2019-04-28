@@ -354,7 +354,9 @@ let result = person.bind(Yve, 22, 'engineer')('female');
 </details>
 <details>
 <summary>new的原理是什么？通过new的方式创建对象和通过字面量创建有什么区别？</summary>
+
 ### new
+
 1.创建一个新对象。
 
 2.这个新对象会被执行[[原型]]连接。
@@ -415,6 +417,7 @@ console.log(Jack.__proto__ === Student.prototype); //true
 </details>
 <details>
 <summary>使用ES5实现一个继承？</summary>
+
 ### 组合继承(最常用的继承方式)
 
 ```js
@@ -460,6 +463,7 @@ function deepClone(obj) { // 递归拷贝
 <details>
 <summary>防抖和节流的区别是什么？防抖和节流的实现。</summary>
 防抖和节流的作用都是防止函数多次调用。区别在于，假设一个用户一直触发这个函数，且每次触发函数的间隔小于设置的时间，防抖的情况下只会调用一次，而节流的情况会每隔一定时间调用一次函数。
+
 ### 防抖(debounce): n秒内函数只会执行一次，如果n秒内高频事件再次被触发，则重新计算时间
 
 ```js
