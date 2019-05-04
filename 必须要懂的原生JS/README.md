@@ -762,3 +762,4 @@ console.log(sumFn(1)(2)(3)); //6
 console.log(sumFn(1)(2, 3)); //6
 ```
 </details>
+<details>
