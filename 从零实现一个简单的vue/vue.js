@@ -19,6 +19,7 @@ function Observer(vm, data) {
       enumerable: true,
       configurable: true,
       get() {
+        // 每次new Watcher的时候，往Dep里面添加Watcher实例对象
         Dep.target && vm.dep.addSub(Dep.target);
         return val;
       },
