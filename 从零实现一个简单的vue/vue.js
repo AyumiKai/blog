@@ -3,19 +3,34 @@ const isPlainObj = isType('Object');
 
 
 function Vue(options) {
-  const { el } = options;
+  const { el, computed } = options;
   this.$options = options;
   this.$el = el;
   const data = this._data = this.$options.data;
+  for (let key in data) {
+    this[key] = data[key];
+  }
   this.dep = new Dep();
   observer(this, data);
+  initComputed.call(this, options.computed);
   new Compile(this);
+}
+
+function initComputed(computed) {
+  const vm = this;
+  for (let key in computed) {
+    vm[key] = computed[key];
+    Object.defineProperty(vm, key, {
+      enumerable: true,
+      get: typeof computed[key] === 'function' ? computed[key] : computed[key].get
+    })
+  }
 }
 
 function Observer(vm, data) {
   for(let key in data) {
     let val = data[key];
-    Object.defineProperty(data, key, {
+    Object.defineProperty(vm, key, {
       enumerable: true,
       configurable: true,
       get() {
@@ -59,7 +74,8 @@ function renderTemplate(dom, vm) {
       let valueArr = RegExp.$1.split('.');
       let val = '';
       valueArr.forEach((value) => {
-        val = !val ? vm._data[value] : val[value];
+        // val = !val ? vm._data[value] : val[value];
+        val = !val ? vm[value] : val[value];
       })
       new Watcher(vm, RegExp.$1, function(newVal) {
         node.textContent = newVal;
@@ -71,7 +87,7 @@ function renderTemplate(dom, vm) {
       const attributes = node.getAttributeNames();
       if (attributes.includes('v-model')) {
         const vModelVal = node.getAttribute('v-model');
-        let val = vm._data;
+        let val = vm;
         node.value = val[vModelVal];
         node.addEventListener('input', function(event) {
           val[vModelVal] = event.target.value;
@@ -94,7 +110,7 @@ function Watcher(vm, exp, fn) {
   this.fn = fn;
   this.vm = vm;
   this.exp = exp;
-  let val = vm._data;
+  let val = vm;
   let arr = exp.split('.');
   arr.forEach((value) => {
     val = val[value]
@@ -103,7 +119,7 @@ function Watcher(vm, exp, fn) {
 }
 
 Watcher.prototype.update = function() {
-  let val = this.vm._data;
+  let val = this.vm;
   let arr = this.exp.split('.');
   arr.forEach((value) => {
     val = val[value]
