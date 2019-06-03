@@ -12,7 +12,7 @@ function Vue(options) {
   }
   this.dep = new Dep();
   observer(this, data);
-  initComputed.call(this, options.computed);
+  initComputed.call(this, computed);
   new Compile(this);
 }
 
@@ -74,7 +74,6 @@ function renderTemplate(dom, vm) {
       let valueArr = RegExp.$1.split('.');
       let val = '';
       valueArr.forEach((value) => {
-        // val = !val ? vm._data[value] : val[value];
         val = !val ? vm[value] : val[value];
       })
       new Watcher(vm, RegExp.$1, function(newVal) {
