@@ -42,10 +42,16 @@ test('linkedList remove', () => {
 
 test('linkedList find', () => {
   let list = new LinkedList();
+  expect(list.findByIndex(0)).toBeNull();
+  expect(() => {
+    list.findPrev()
+  }).toThrow();
   expect(() => {
     list.findByValue('one')
   }).toThrow();
   list.append('one');
+  expect(list.findPrev('one')).toBeNull();
+  expect(list.findByIndex(0).element).toBe('one');
   expect(list.findByValue('one').element).toBe('one');
   list.remove('one');
   expect(() => {
@@ -55,6 +61,9 @@ test('linkedList find', () => {
   list.append('hongkong');
   expect(list.findPrev('hongkong').element).toBe('beijing');
   expect(list.findByIndex(1).element).toBe('hongkong');
+  list.append('tokyo');
+  list.append('taipei');
+  expect(list.findPrev('tokyo').element).toBe('hongkong');
 });
 
 test('linkedList insert', () => {
@@ -63,7 +72,31 @@ test('linkedList insert', () => {
     list('one', 'two')
   }).toThrow();
   list.append('two')
-  list.insert('one', 'two');
+  list.insert('one', 'two'); // two one 
+  list.insert('six', 'one'); // two one six
+  list.insert('seven', 'one'); // two one seven six
+  list.insert('eight', 'one'); // two one eight seven six
+  list.remove('two'); // one eight seven six
+  list.remove('seven'); // one eight six
+  expect(() => {
+    list.insert('four', 'three');
+  }).toThrow();
+  expect(list.size()).toBe(3);
+  expect(list.findByIndex(1).element).toBe('eight');
+  expect(list.display()).toBe('one -> eight -> six');
+});
+
+test('remove', () => {
+  let list = new LinkedList();
+  expect(() => {
+    list.remove('one');
+  }).toThrow();
+  list.append('one');
+  expect(() => {
+    list.remove('two');
+  }).toThrow();
+  list.append('three');
+  list.append('four');
+  list.remove('three');
   expect(list.size()).toBe(2);
-  expect(list.findByIndex(1).element).toBe('one');
 });

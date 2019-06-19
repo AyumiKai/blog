@@ -98,14 +98,13 @@ class LinkedList {
    * @param {*} item
    */
   remove (item)  {
+    if (this.size() === 0) {
+      throw new Error('空的链表'); // 如果是空链表的花就抛异常
+    }
     if (!this.findByValue(item)) { // 如果删除值不存在的话。直接抛异常
       throw new Error('删除的结点值不存在');
     }
     let currentNode = this.head.next;
-    // 如果是空链表的花就抛异常
-    if (this.size() === 0) {
-      throw new Error('空的链表');
-    }
     
     // 如果是删除表头的结点
     if (currentNode.element === item) {
