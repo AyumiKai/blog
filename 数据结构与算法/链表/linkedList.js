@@ -4,7 +4,14 @@ class Node {
     this.next = null;
   }
 }
-
+/**
+ * 1) 单链表反转
+ * 2) 链表中环的检测
+ * 3) 两个有序的链表合并
+ * 4) 删除链表倒数第n个结点
+ * 5) 求链表的中间结点
+ *
+ */
 class LinkedList {
   constructor() {
     this.head = new Node('head'); // 默认表头为空
@@ -30,7 +37,10 @@ class LinkedList {
     }
   }
   
-  // 根据index查找节点，下标从0开始
+  /**
+   * 根据index查找节点，下标从0开始
+   * @param {*} index 
+   */
   findByIndex (index) {
     let count = -1;
     let currentNode = this.head.next;
@@ -46,7 +56,10 @@ class LinkedList {
     return null; // 如果是空链表的话就直接返回null
   }
   
-  // 向链表末尾追加节点
+  /**
+   * 向链表末尾追加节点
+   * @param {*} newElement 
+   */
   append(newElement) {
     if (this.size() === 0) { // 如果是空链表的话
       this.head.next = new Node(newElement);
@@ -80,7 +93,10 @@ class LinkedList {
     }
   }
   
-  // 查找前一个
+  /**
+   * 查找前一个
+   * @param {*} item 
+   */
   findPrev (item) {
     if (this.size() === 0) throw new Error('链表为空');
     let currentNode = this.head.next;
@@ -130,7 +146,9 @@ class LinkedList {
     }
   }
   
-  // 遍历显示所有节点
+  /**
+   * 遍历显示所有节点
+   */
   display () {
     let currentNode = this.head.next // 忽略头指针的值
     let nodeStr = '';
@@ -141,7 +159,10 @@ class LinkedList {
     return nodeStr;
   }
   
-  size() { // 返回链表的长度
+  /**
+   * 返回链表的长度
+   */
+  size() { 
     let count = 0;
     let currentNode = this.head.next;
     if (currentNode !== null) {
