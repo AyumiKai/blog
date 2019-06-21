@@ -174,6 +174,43 @@ class LinkedList {
     }
     return count;
   }
+
+  /**
+   * 尾插法, 单链表反转
+   */
+  reverseList() {
+    let currentNode = this.head.next;
+    if (currentNode === null || this.size() === 1) return; // 如果是空链表或者只有一个结点的话直接退出
+    const root = new Node('head');
+    while(currentNode !== null) {
+      let next = currentNode.next;
+      currentNode.next = root.next;
+      root.next = currentNode;
+      currentNode = next;
+    }
+    this.head = root;
+  }
+
+  /**
+   * 链表中环的检测
+   */
+  checkCircle() {
+    // 这种写法的可以节省空间复杂度，少一个数组的数据结构
+    let currentNode = this.head.next,
+        fast = currentNode, // 每次都2步
+        slow = currentNode; // 每次都1步
+    // 如果是空链表和只有一个结点的链表不会形成环
+    if (currentNode === null || currentNode.next === null) return false;
+    while(fast && fast.next && currentNode !== null) {
+      fast = fast.next.next;
+      slow = slow.next;
+      if (fast && fast.element === slow.element) {
+        return true
+      }
+      currentNode = currentNode.next;
+    }
+    return false;
+  }
 }
 
 module.exports = {

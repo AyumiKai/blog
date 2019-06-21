@@ -100,3 +100,46 @@ test('remove', () => {
   list.remove('three');
   expect(list.size()).toBe(2);
 });
+
+test('reverse linkedList', () => {
+  let list = new LinkedList();
+  list.append('one');
+  list.reverseList();
+  expect(list.display()).toBe('one');
+  list.append('two');
+  list.reverseList();
+  expect(list.display()).toBe('two -> one');
+  list.append('three');
+  list.reverseList();
+  expect(list.display()).toBe('three -> one -> two');
+  list.append('four');
+  list.reverseList();
+  expect(list.display()).toBe('four -> two -> one -> three');
+});
+
+test('check circle', () => {
+  let list = new LinkedList();
+  expect(list.checkCircle()).toBe(false);
+  list.append('apple');
+  expect(list.checkCircle()).toBe(false);
+  list.append('orange');
+  let lastNode = list.findByIndex(list.size() - 1);
+  lastNode.next = list.findByIndex(0);
+  expect(list.checkCircle()).toBe(true);
+  let aList = new LinkedList();
+  aList.append('apple');
+  aList.append('orange');
+  aList.append('milk');
+  aList.append('tomato');
+  aList.append('grape');
+  expect(aList.checkCircle()).toBe(false);
+  let bList = new LinkedList();
+  bList.append('apple');
+  bList.append('orange');
+  bList.append('milk');
+  bList.append('tomato');
+  bList.append('grape');
+  let bLastNode = bList.findByIndex(bList.size() - 1);
+  bLastNode.next = bList.findByIndex(2);
+  expect(bList.checkCircle()).toBe(true);
+});
