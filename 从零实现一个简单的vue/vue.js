@@ -1,6 +1,8 @@
 const isType = (type) => (val) => Object.prototype.toString.call(val) === `[object ${type}]`;
 const isPlainObj = isType('Object');
 
+// observer、dep、watch的关系，observer负责data的defineProperty，dep收集watcher，什么时候添加watch到dep，compile时遇到v-model等触发observer的get添加到dep，observer的set时触发dep收集的watcher
+// watch通过回调的形式在compile的时候拿到编译的模板对象，其次watch类里面有个update的方法，里面就能拿到最新的val值，然后直接执行这个回调
 
 function Vue(options) {
   const { el, computed } = options;
@@ -30,6 +32,9 @@ function initComputed(computed) {
 function Observer(vm, data) {
   for(let key in data) {
     let val = data[key];
+    if (isPlainObj(val)) {
+      return Observer(vm, val);
+    }
     Object.defineProperty(vm, key, {
       enumerable: true,
       configurable: true,
@@ -41,7 +46,7 @@ function Observer(vm, data) {
       set(newValue) {
         if (newValue !== val) {
           val = newValue;
-          observer(vm, newValue);
+          // observer(vm, newValue);
           vm.dep.notify();
           return newValue;
         }
