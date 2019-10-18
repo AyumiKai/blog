@@ -46,7 +46,6 @@ function Observer(vm, data) {
       set(newValue) {
         if (newValue !== val) {
           val = newValue;
-          // observer(vm, newValue);
           vm.dep.notify();
           return newValue;
         }
@@ -125,9 +124,11 @@ function Watcher(vm, exp, fn) {
 Watcher.prototype.update = function() {
   let val = this.vm;
   let arr = this.exp.split('.');
+  console.log('arr: ', arr);
   arr.forEach((value) => {
     val = val[value]
   })
+  console.log('update val: ', val);
   this.fn(val);
 }
 
